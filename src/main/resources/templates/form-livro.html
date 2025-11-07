@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section})}">
+<body>
+
+<section>
+    <h1 th:if="${livro.id == null}"><i class="bi bi-plus-circle"></i> Adicionar Novo Livro</h1>
+    <h1 th:unless="${livro.id == null}"><i class="bi bi-pencil-square"></i> Editar Livro</h1>
+
+    <form th:action="@{/livros/salvar}" th:object="${livro}" method="post" class="mt-4">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título:</label>
+            <input type="text" id="titulo" th:field="*{titulo}" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="anoPublicacao" class="form-label">Ano de Publicação:</label>
+            <input type="number" id="anoPublicacao" th:field="*{anoPublicacao}" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="editora" class="form-label">Editora:</label>
+            <select id="editora" th:field="*{editora}" class="form-select" required>
+                <option value="">Selecione uma Editora</option>
+                <option th:each="editora : ${listaEditoras}"
+                        th:value="${editora.id}"
+                        th:text="${editora.nome}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="autores" class="form-label">Autores:</label>
+            <select id="autores" th:field="*{autores}" class="form-select" multiple="multiple" required size="5">
+                <option th:each="autor : ${listaAutores}"
+                        th:value="${autor.id}"
+                        th:text="${autor.nome}"></option>
+            </select>
+            <div class="form-text">Segure Ctrl (ou Cmd no Mac) para selecionar múltiplos autores.</div>
+        </div>
+
+        <hr>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/livros}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</section>
+
+</body>
+</html>
