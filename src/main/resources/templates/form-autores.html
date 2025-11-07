@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section})}">
+<body>
+
+<section>
+    <h1 th:if="${autor.id == null}"><i class="bi bi-plus-circle"></i> Adicionar Novo Autor</h1>
+    <h1 th:unless="${autor.id == null}"><i class="bi bi-pencil-square"></i> Editar Autor</h1>
+
+    <form th:action="@{/autores/salvar}" th:object="${autor}" method="post" class="mt-4">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome:</label>
+            <input type="text" id="nome" th:field="*{nome}" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="nacionalidade" class="form-label">Nacionalidade:</label>
+            <input type="text" id="nacionalidade" th:field="*{nacionalidade}" class="form-control" />
+        </div>
+
+        <hr>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/autores}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</section>
+
+</body>
+</html>
