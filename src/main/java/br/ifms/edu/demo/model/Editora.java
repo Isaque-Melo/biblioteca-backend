@@ -16,10 +16,8 @@ public class Editora {
     private String nome;
     private String cidade;
 
-    // Uma editora tem muitos livros. 'mappedBy' diz que a entidade Livro gerencia o relacionamento.
-    // fetch = FetchType.LAZY: Os livros só serão carregados do banco quando forem explicitamente solicitados.
-    @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
+    @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Livro> livros;
 
     // Getters e Setters

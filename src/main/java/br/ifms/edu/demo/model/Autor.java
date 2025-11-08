@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Autor {
@@ -16,8 +17,8 @@ public class Autor {
     private String nome;
     private String nacionalidade;
 
+    @JsonIgnoreProperties("autores")
     @ManyToMany(mappedBy = "autores")
-    @JsonBackReference
     private List<Livro> livros;
 
     // Getters e Setters

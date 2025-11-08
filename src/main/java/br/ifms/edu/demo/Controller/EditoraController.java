@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/editoras")
 @Tag(name = "Editora Controller", description = "API para gerenciar editoras")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EditoraController {
 
     @Autowired
@@ -33,7 +35,7 @@ public class EditoraController {
     public List<Editora> listarEditoras() {
         return editoraRepository.findAll();
     }
-    // READ (Por ID) - Retorna os DADOS (JSON) de uma editora
+    // READ (Por ID) 
     @GetMapping("/{id}")
     public ResponseEntity<Editora> buscarEditoraPorId(@PathVariable Long id) {
         // Encontra a editora ou retorna 404 (Não Encontrado)
@@ -42,15 +44,15 @@ public class EditoraController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // CREATE - Mostrar formulário para adicionar nova editora
+    // CREATE - 
      @PostMapping
     public ResponseEntity<Editora> salvarEditora(@RequestBody Editora editora) {
-        // @RequestBody converte o JSON enviado no corpo da requisição para o objeto Editora
+        
         Editora novaEditora = editoraRepository.save(editora);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novaEditora); // <-- DEPOIS: Retorna 201 Created com o objeto salvo
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaEditora); //Retorna 201 Created com o objeto salvo
     }
 
-    // UPDATE - Mostrar formulário para editar editora
+    // UPDATE 
    @PutMapping("/{id}")
     public ResponseEntity<Editora> editarEditora(@PathVariable Long id, @RequestBody Editora editoraDetalhes) {
         return editoraRepository.findById(id)
