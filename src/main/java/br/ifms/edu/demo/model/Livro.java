@@ -2,6 +2,8 @@ package br.ifms.edu.demo.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +20,7 @@ public class Livro {
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER: Carrega a editora junto com o livro.
     @JoinColumn(name = "editora_id")
+    @JsonManagedReference
     private Editora editora;
 
     @ManyToMany
@@ -26,6 +29,7 @@ public class Livro {
         joinColumns = @JoinColumn(name = "livro_id"),
         inverseJoinColumns = @JoinColumn(name = "autor_id")
     )
+    @JsonManagedReference
     private List<Autor> autores;
 
 

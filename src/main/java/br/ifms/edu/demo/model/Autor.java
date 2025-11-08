@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Autor {
 
@@ -15,6 +17,7 @@ public class Autor {
     private String nacionalidade;
 
     @ManyToMany(mappedBy = "autores")
+    @JsonBackReference
     private List<Livro> livros;
 
     // Getters e Setters

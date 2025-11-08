@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Editora {
 
@@ -17,6 +19,7 @@ public class Editora {
     // Uma editora tem muitos livros. 'mappedBy' diz que a entidade Livro gerencia o relacionamento.
     // fetch = FetchType.LAZY: Os livros só serão carregados do banco quando forem explicitamente solicitados.
     @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Livro> livros;
 
     // Getters e Setters

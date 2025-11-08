@@ -1,74 +1,58 @@
 package br.ifms.edu.demo.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import br.ifms.edu.demo.model.Livro;
-import br.ifms.edu.demo.repository.AutorRepository;
-import br.ifms.edu.demo.repository.EditoraRepository;
 import br.ifms.edu.demo.repository.LivroRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+
+@RestController
+@RequestMapping("/api/livros")
+@Tag(name = "Livro Controller", description = "API para gerenciar livros")
 public class LivroController {
 
     @Autowired
     private LivroRepository livroRepository;
 
-     @Autowired
-    private EditoraRepository editoraRepository;
-
-    @Autowired
-    private AutorRepository autorRepository;
-
-
-
-    @GetMapping("/")
-    public String home() {
-        return "redirect:/livros"; 
+    // READ - Listar todos os livros
+    @GetMapping
+    public List<Livro> listarLivros() {
+        return livroRepository.findAll();
     }
 
-    @GetMapping("/livros")
-    public String listarLivros(Model model) {
-        model.addAttribute("livros", livroRepository.findAll());
-        return "lista-livros"; 
+    //create - Mostrar formulário para adicionar novo livro
+    @PostMapping("/livros/novo")
+    public ResponseEntity<Livro> mostrarFormularioDeAdicionarLivro(@RequestBody Livro livro) {
+        Livro novoLivro = new Livro();
+        return ResponseEntity.ok(novoLivro);
     }
-
-      @GetMapping("/livros/novo")
-    public String mostrarFormularioDeAdicionarLivro(Model model) {
-        model.addAttribute("livro", new Livro()); // Objeto livro em branco para o formulário
-        model.addAttribute("listaEditoras", editoraRepository.findAll());
-        model.addAttribute("listaAutores", autorRepository.findAll());
-        return "form-livro"; 
-    }
-
-     @PostMapping("/livros/salvar")
-    public String salvarLivro(@ModelAttribute("livro") Livro livro) {
-        livroRepository.save(livro);
-        return "redirect:/livros"; 
-    }
-
-    @GetMapping("/livros/editar/{id}")
-    public String mostrarFormularioDeEditarLivro(@PathVariable Long id, Model model) {
+       
+     
+    // UPDATE - Mostrar formulário para editar livro
+    @PutMapping("/livros/editar/{id}")
+    public ResponseEntity<Livro> mostrarFormularioDeEditarLivro(@PathVariable Long id, @RequestBody Livro livroDetalhes) {
         // Busca o livro no banco pelo ID ou lança exceção se não encontrar
         Livro livro = livroRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID do livro inválido:" + id));
-        
-        model.addAttribute("livro", livro);
-        model.addAttribute("listaEditoras", editoraRepository.findAll());
-        model.addAttribute("listaAutores", autorRepository.findAll());
-        return "form-livro";
+        return ResponseEntity.ok(livro);
     }
 
     // DELETE - Deletar um livro
-    @GetMapping("/livros/deletar/{id}")
-    public String deletarLivro(@PathVariable Long id) {
+    @DeleteMapping("/livros/deletar/{id}")
+    public ResponseEntity<Void> deletarLivro(@PathVariable Long id) {
         livroRepository.deleteById(id);
-        return "redirect:/livros"; 
+        return ResponseEntity.noContent().build();
     }
 
 
