@@ -2,9 +2,6 @@ package br.ifms.edu.demo.model;
 
 import java.util.List;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Livro {
@@ -16,14 +13,10 @@ public class Livro {
     private String titulo;
     private int anoPublicacao;
 
-    // --- Relacionamento com Editora (Costas) ---
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name = "editora_id")
     private Editora editora;
 
-    // --- Relacionamento com Autor (Frente) ---
-    @JsonIgnoreProperties("livros")
     @ManyToMany
     @JoinTable(
         name = "livro_autor",

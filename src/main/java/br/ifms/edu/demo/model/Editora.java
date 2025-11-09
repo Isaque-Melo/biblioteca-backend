@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Editora {
@@ -16,7 +15,6 @@ public class Editora {
     private String nome;
     private String cidade;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Livro> livros;
 

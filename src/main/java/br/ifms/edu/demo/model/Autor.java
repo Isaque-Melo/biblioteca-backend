@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
 public class Autor {
 
@@ -17,7 +14,6 @@ public class Autor {
     private String nome;
     private String nacionalidade;
 
-    @JsonIgnoreProperties("autores")
     @ManyToMany(mappedBy = "autores")
     private List<Livro> livros;
 

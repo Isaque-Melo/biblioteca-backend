@@ -1,67 +1,85 @@
 package br.ifms.edu.demo.Controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import br.ifms.edu.demo.repository.AutorRepository;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import br.ifms.edu.demo.model.Autor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
+import br.ifms.edu.demo.dto.AutorDTO; // Importe o DTO
+import br.ifms.edu.demo.model.Autor;
+import br.ifms.edu.demo.repository.AutorRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/autores")
-@Tag(name = "Autor Controller", description = "API para gerenciar autores")
 @CrossOrigin(origins = "http://localhost:4200")
+@Tag(name = "Autor Controller", description = "API para gerenciar autores")
 public class AutorController {
 
     @Autowired
     private AutorRepository autorRepository;
 
+    // LISTAR (GET)
+    @Operation(summary = "Lista todos os autores")
+    @ApiResponse(responseCode = "200", description = "Lista de autores retornada com sucesso")
     @GetMapping
-    public List<Autor> listarAutores() {
-        return autorRepository.findAll();
+    public List<AutorDTO> listarAutores() {
+        return autorRepository.findAll().stream()
+                .map(this::toDTO) 
+                .toList();
     }
-   // READ (Por ID) 
+   
+    // BUSCAR POR ID (GET)
+    @Operation(summary = "Busca um autor por ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Autor encontrado"),
+        @ApiResponse(responseCode = "404", description = "Autor não encontrado")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<Autor> buscarAutorPorId(@PathVariable Long id) {
-        // Encontra o autor ou retorna 404 (Não Encontrado)
+    public ResponseEntity<AutorDTO> buscarAutorPorId(@PathVariable Long id) {
         return autorRepository.findById(id)
-                .map(autor -> ResponseEntity.ok(autor))
+                .map(autor -> ResponseEntity.ok(toDTO(autor))) // Converte para DTO
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // CREATE 
+    // CRIAR (POST)
+    @Operation(summary = "Cria um novo autor")
+    @ApiResponse(responseCode = "201", description = "Autor criado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Dados inválidos ")
     @PostMapping
-    public ResponseEntity<Autor> salvarAutor(@RequestBody Autor autor) {
+    public ResponseEntity<AutorDTO> salvarAutor(@RequestBody AutorDTO dto) {
+        Autor autor = toEntity(dto); // Converte DTO para Entidade
         Autor novoAutor = autorRepository.save(autor);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoAutor); // Retorna 201 Created com o objeto salvo
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(novoAutor));
     }
     
-    // UPDATE 
+    // ATUALIZAR (PUT)
+    @Operation(summary = "Atualiza um autor existente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Autor atualizado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Autor não encontrado")
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<Autor> editarAutor(@PathVariable Long id, @RequestBody Autor autorDetalhes) {
+    public ResponseEntity<AutorDTO> editarAutor(@PathVariable Long id, @RequestBody AutorDTO dto) {
         return autorRepository.findById(id)
                 .map(autorExistente -> {
-                    autorExistente.setNome(autorDetalhes.getNome());
-                    autorExistente.setNacionalidade(autorDetalhes.getNacionalidade());
-                    Autor autorAtualizado = autorRepository.save(autorExistente);
-                    return ResponseEntity.ok(autorAtualizado);
+                    Autor autorAtualizado = toEntity(dto, id); 
+                    autorAtualizado = autorRepository.save(autorAtualizado);
+                    return ResponseEntity.ok(toDTO(autorAtualizado));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // DELETE 
+    // DELETAR (DELETE)
+    @Operation(summary = "Deleta um autor por ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Autor deletado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Autor não encontrado")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarAutor(@PathVariable Long id) {
         return autorRepository.findById(id)
@@ -70,5 +88,25 @@ public class AutorController {
                     return ResponseEntity.noContent().build(); 
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // --- MAPPERS ---
+    private AutorDTO toDTO(Autor autor) {
+        return new AutorDTO(autor.getId(), autor.getNome(), autor.getNacionalidade());
+    }
+
+    private Autor toEntity(AutorDTO dto) {
+        Autor autor = new Autor();
+        autor.setNome(dto.nome());
+        autor.setNacionalidade(dto.nacionalidade());
+        return autor;
+    }
+    
+    private Autor toEntity(AutorDTO dto, Long id) {
+        Autor autor = new Autor();
+        autor.setId(id); 
+        autor.setNome(dto.nome());
+        autor.setNacionalidade(dto.nacionalidade());
+        return autor;
     }
 }
