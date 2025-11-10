@@ -18,6 +18,7 @@ import br.ifms.edu.demo.repository.EditoraRepository;
 import br.ifms.edu.demo.repository.LivroRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/livros")
@@ -56,7 +57,7 @@ public class LivroController {
     @ApiResponse(responseCode = "201", description = "Livro criado com sucesso")
     @ApiResponse(responseCode = "400", description = "Dados inválidos")
     @PostMapping
-    public ResponseEntity<LivroResponseDTO> salvarLivro(@RequestBody LivroFormDTO dto) {
+    public ResponseEntity<LivroResponseDTO> salvarLivro( @Valid @RequestBody LivroFormDTO dto) {
         Livro livro = toEntity(dto);
         Livro novoLivro = livroRepository.save(livro);
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponseDTO(novoLivro));
@@ -66,7 +67,7 @@ public class LivroController {
     @Operation(summary = "Atualiza um livro existente")
     @ApiResponse(responseCode = "200", description = "Livro atualizado com sucesso")
     @PutMapping("/{id}")
-    public ResponseEntity<LivroResponseDTO> editarLivro(@PathVariable Long id, @RequestBody LivroFormDTO dto) {
+    public ResponseEntity<LivroResponseDTO> editarLivro(@PathVariable Long id, @Valid @RequestBody LivroFormDTO dto) {
         return livroRepository.findById(id)
                 .map(livroExistente -> {
                     Livro livroAtualizado = toEntity(dto, id);

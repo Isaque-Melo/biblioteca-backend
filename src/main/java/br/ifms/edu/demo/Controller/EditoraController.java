@@ -12,6 +12,7 @@ import br.ifms.edu.demo.repository.EditoraRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/editoras")
@@ -48,7 +49,7 @@ public class EditoraController {
     @ApiResponse(responseCode = "201", description = "Editora criada com sucesso")
     @ApiResponse(responseCode = "400", description = "Dados inválidos")
     @PostMapping
-    public ResponseEntity<EditoraDTO> salvarEditora(@RequestBody EditoraDTO dto) {
+    public ResponseEntity<EditoraDTO> salvarEditora( @Valid @RequestBody EditoraDTO dto) {
         Editora editora = toEntity(dto);
         Editora novaEditora = editoraRepository.save(editora);
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(novaEditora));
@@ -59,7 +60,7 @@ public class EditoraController {
     @ApiResponse(responseCode = "200", description = "Editora atualizada com sucesso")
     @ApiResponse(responseCode = "404", description = "Editora não encontrada")
     @PutMapping("/{id}")
-    public ResponseEntity<EditoraDTO> editarEditora(@PathVariable Long id, @RequestBody EditoraDTO dto) {
+    public ResponseEntity<EditoraDTO> editarEditora(@PathVariable Long id, @Valid @RequestBody EditoraDTO dto) {
         return editoraRepository.findById(id)
                 .map(editoraExistente -> {
                     Editora editoraAtualizada = toEntity(dto, id);
