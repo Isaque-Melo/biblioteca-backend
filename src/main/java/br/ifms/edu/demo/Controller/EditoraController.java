@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/editoras")
-@CrossOrigin(origins = "http://localhost:4200")
 @Tag(name = "Editora Controller", description = "API para gerenciar editoras")
 public class EditoraController {
 

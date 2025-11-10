@@ -15,10 +15,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/autores")
-@CrossOrigin(origins = "http://localhost:4200")
 @Tag(name = "Autor Controller", description = "API para gerenciar autores")
 public class AutorController {
 
@@ -53,7 +53,7 @@ public class AutorController {
     @ApiResponse(responseCode = "201", description = "Autor criado com sucesso")
     @ApiResponse(responseCode = "400", description = "Dados inválidos ")
     @PostMapping
-    public ResponseEntity<AutorDTO> salvarAutor(@RequestBody AutorDTO dto) {
+    public ResponseEntity<AutorDTO> salvarAutor( @Valid @RequestBody AutorDTO dto) {
         Autor autor = toEntity(dto); // Converte DTO para Entidade
         Autor novoAutor = autorRepository.save(autor);
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(novoAutor));
@@ -66,7 +66,7 @@ public class AutorController {
         @ApiResponse(responseCode = "404", description = "Autor não encontrado")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<AutorDTO> editarAutor(@PathVariable Long id, @RequestBody AutorDTO dto) {
+    public ResponseEntity<AutorDTO> editarAutor(@PathVariable Long id, @Valid @RequestBody AutorDTO dto) {
         return autorRepository.findById(id)
                 .map(autorExistente -> {
                     Autor autorAtualizado = toEntity(dto, id); 
