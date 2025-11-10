@@ -4,10 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import br.ifms.edu.demo.dto.AutorDTO; // Importe o DTO
 import br.ifms.edu.demo.model.Autor;
+import br.ifms.edu.demo.model.Livro;
 import br.ifms.edu.demo.repository.AutorRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -81,9 +83,15 @@ public class AutorController {
         @ApiResponse(responseCode = "404", description = "Autor não encontrado")
     })
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<?> deletarAutor(@PathVariable Long id) {
         return autorRepository.findById(id)
                 .map(autor -> {
+                    // dissociar o autor dos livros antes de deletar
+                    for (Livro livro : autor.getLivros()) {
+                        livro.getAutores().remove(autor);
+                    }
+                    // agora deletar o autor
                     autorRepository.deleteById(id);
                     return ResponseEntity.noContent().build(); 
                 })
