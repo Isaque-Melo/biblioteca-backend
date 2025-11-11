@@ -13,7 +13,7 @@ public class Livro {
     private String titulo;
     private int anoPublicacao;
 
-    @ManyToOne(fetch = FetchType.EAGER) 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "editora_id")
     private Editora editora;
 
