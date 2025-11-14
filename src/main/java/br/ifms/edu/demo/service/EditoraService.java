@@ -11,7 +11,6 @@ import br.ifms.edu.demo.mapper.EditoraMapper;
 import br.ifms.edu.demo.model.Editora;
 import br.ifms.edu.demo.repository.EditoraRepository;
 import br.ifms.edu.demo.repository.LivroRepository; 
-// (Importe sua exceção personalizada quando a tiver)
 
 @Service
 public class EditoraService {
