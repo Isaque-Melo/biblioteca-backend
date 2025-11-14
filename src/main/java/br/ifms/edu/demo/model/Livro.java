@@ -4,10 +4,14 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
     
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Livro {
 
     @Id
