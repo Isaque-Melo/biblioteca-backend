@@ -2,8 +2,12 @@ package br.ifms.edu.demo.model;
 
 import java.util.List;
 import jakarta.persistence.*;
-
+import lombok.Getter;
+import lombok.Setter;
+    
 @Entity
+@Getter
+@Setter
 public class Livro {
 
     @Id
@@ -25,35 +29,5 @@ public class Livro {
     )
     private List<Autor> autores;
 
-    // --- Getters e Setters ---
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getTitulo() {
-        return titulo;
-    }
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-    public int getAnoPublicacao() {
-        return anoPublicacao;
-    }
-    public void setAnoPublicacao(int anoPublicacao) {
-        this.anoPublicacao = anoPublicacao;
-    }
-    public Editora getEditora() {
-        return editora;
-    }
-    public void setEditora(Editora editora) {
-        this.editora = editora;
-    }
-    public List<Autor> getAutores() {
-        return autores;
-    }
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
-    }
+   
 }

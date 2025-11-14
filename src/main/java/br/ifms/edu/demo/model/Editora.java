@@ -3,9 +3,13 @@ package br.ifms.edu.demo.model;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Entity
+@Getter
+@Setter
 public class Editora {
 
     @Id
@@ -17,26 +21,6 @@ public class Editora {
 
     @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Livro> livros;
-
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getNome() {
-        return nome;
-    }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-    public String getCidade() {
-        return cidade;
-    }
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
-    }
 
      @Override
     public boolean equals(Object o) {
