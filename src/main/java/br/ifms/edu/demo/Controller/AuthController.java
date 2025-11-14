@@ -3,6 +3,8 @@ package br.ifms.edu.demo.Controller;
 import java.net.Authenticator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,12 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ifms.edu.demo.dto.AuthRequestDTO;
 import br.ifms.edu.demo.dto.AuthResponseDTO;
+import br.ifms.edu.demo.dto.LeitorRegistroDTO;
+import br.ifms.edu.demo.dto.LeitorResponseDTO;
 import br.ifms.edu.demo.model.Leitor;
 import br.ifms.edu.demo.service.JwtService;
+import br.ifms.edu.demo.service.LeitorService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Autowired
+    private LeitorService leitorService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -37,6 +46,12 @@ public class AuthController {
         Leitor leitor = (Leitor) authentication.getPrincipal();
         String token =jwtService.generateToken(leitor);
         return ResponseEntity.ok(new AuthResponseDTO(token));
+    }
+
+    @PostMapping("/registrar")
+    public ResponseEntity<LeitorResponseDTO> registrar(@RequestBody @Valid LeitorRegistroDTO dto) {
+        LeitorResponseDTO leitorRegistrado = leitorService.registrar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(leitorRegistrado);
     }
     
 }

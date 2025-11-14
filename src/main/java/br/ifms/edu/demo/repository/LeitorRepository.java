@@ -10,4 +10,5 @@ import br.ifms.edu.demo.model.Leitor;
 public interface LeitorRepository extends JpaRepository<Leitor, Long> {
 
     Optional<Leitor> findByEmail(String email);
+    Boolean existsByEmail(String email);
 }
