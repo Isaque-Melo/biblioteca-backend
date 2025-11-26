@@ -31,7 +31,7 @@ public class Leitor implements UserDetails {
     private String email;
     private String password;
 
-    private String role = "Leitor";
+    private String roles = "Leitor";
 
     // Lado dono do relacionamento
     @OneToOne(cascade = CascadeType.ALL) // cascade: se eu salvar um leitor, salva o cartão junto.
@@ -40,7 +40,7 @@ public class Leitor implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Stream.of(this.role.split(","))
+        return Stream.of(this.roles.split(","))
             .map(SimpleGrantedAuthority::new)
             .toList();
     }

@@ -42,7 +42,7 @@ public class LeitorService {
         Leitor leitor = leitorMapper.toEntity(dto);
         leitor.setPassword(passwordEncoder.encode(dto.senha()));
         leitor.setCartao(cartao);
-        leitor.setRole("Leitor");
+        leitor.setRoles("Leitor");
         cartao.setLeitor(leitor); 
         cartaoRepository.save(cartao);
         return leitorMapper.toResponseDTO(leitor);
