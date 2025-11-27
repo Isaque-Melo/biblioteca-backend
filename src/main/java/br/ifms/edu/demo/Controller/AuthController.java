@@ -1,6 +1,10 @@
 package br.ifms.edu.demo.Controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.logging.log4j.util.StringMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +45,20 @@ public class AuthController {
          Authentication authentication = authenticationManager.authenticate(usernamePassword);
 
         Leitor leitor = (Leitor) authentication.getPrincipal();
-        String token =jwtService.generateToken(leitor);
+
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("nome", leitor.getNome());
+        extraClaims.put("id", leitor.getId());
+
+        if (leitor.getCartao() != null) {
+            extraClaims.put("cartao", leitor.getCartao().getNumero());
+        }
+        else {
+            extraClaims.put("cartao", "Pendente");
+        }
+
+        String token = jwtService.generateToken(extraClaims, leitor);
+
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 

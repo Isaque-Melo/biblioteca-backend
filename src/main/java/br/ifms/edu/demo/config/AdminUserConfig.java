@@ -1,6 +1,7 @@
 package br.ifms.edu.demo.config;
 
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.boot.CommandLineRunner;
@@ -43,7 +44,9 @@ public class AdminUserConfig implements CommandLineRunner {
 
         // Cria o cartão para o admin (regra do sistema)
         CartaoBiblioteca cartao = new CartaoBiblioteca();
-        cartao.setNumero(UUID.randomUUID().toString());
+        Random random = new Random();
+        int numeroCartao = random.nextInt(9000) + 1000;
+        cartao.setNumero(String.valueOf(numeroCartao));
         cartao.setDataEmissao(LocalDate.now());
         cartaoRepository.save(cartao);
 

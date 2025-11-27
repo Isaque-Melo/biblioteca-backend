@@ -1,7 +1,7 @@
 package br.ifms.edu.demo.service;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +35,9 @@ public class LeitorService {
             throw new RuntimeException("Email já cadastrado");
         }
         CartaoBiblioteca cartao = new CartaoBiblioteca();
-        cartao.setNumero(UUID.randomUUID().toString());
+        Random random = new Random();
+        int numeroCartao = random.nextInt(9000) + 1000;
+        cartao.setNumero(String.valueOf(numeroCartao));
         cartao.setDataEmissao(LocalDate.now());
         cartaoRepository.save(cartao);
 
