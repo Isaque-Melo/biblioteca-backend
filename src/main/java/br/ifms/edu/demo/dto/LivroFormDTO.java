@@ -17,7 +17,6 @@ public class LivroFormDTO {
 
 
     @Schema(description = "Ano de publicação do livro", example = "1899")
-    @NotBlank(message = "O ano de publicação do livro não pode ser vazio")
     @Min(value = 1, message = "O ano de publicação deve ser um número positivo")
     private int anoPublicacao;
 
