@@ -16,7 +16,6 @@ import br.ifms.edu.demo.repository.LivroRepository;
 public class EditoraService {
 
     private final EditoraRepository editoraRepository;
-    private final LivroRepository livroRepository; // Precisamos para verificar a deleção
     private final EditoraMapper editoraMapper;
 
     @Autowired
@@ -26,7 +25,6 @@ public class EditoraService {
         EditoraMapper editoraMapper
     ) {
         this.editoraRepository = editoraRepository;
-        this.livroRepository = livroRepository;
         this.editoraMapper = editoraMapper;
     }
 

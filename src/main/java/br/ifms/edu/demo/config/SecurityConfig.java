@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import br.ifms.edu.demo.security.JwtAuthenticationFilter;
-import br.ifms.edu.demo.service.DetalheUsuarioServiceImp;
 
 @Configuration 
 @EnableWebSecurity 
@@ -25,8 +24,6 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Autowired
-    private DetalheUsuarioServiceImp detalheUsuarioService;
 
     @Bean 
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
