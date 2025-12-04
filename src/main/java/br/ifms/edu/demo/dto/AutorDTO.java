@@ -10,10 +10,10 @@ public record AutorDTO(
 
     @NotBlank(message = "O nome do autor não pode ser vazio")
     @Size(min = 2, max = 100, message = "O nome do autor deve ter entre 2 e 100 caracteres")
-    @Schema(description = "Nome do autor", example = "Machado de Assis", required = true)
+    @Schema(description = "Nome do autor", example = "Machado de Assis")
     String nome,
 
-    @Schema(description = "Nacionalidade do autor", example = "Brasileira", required = true)
+    @Schema(description = "Nacionalidade do autor", example = "Brasileira")
     @NotBlank(message = "A nacionalidade do autor não pode ser vazia")
     String nacionalidade
 ) {}

@@ -41,12 +41,13 @@ public class LeitorService {
         cartao.setDataEmissao(LocalDate.now());
         cartaoRepository.save(cartao);
 
+
         Leitor leitor = leitorMapper.toEntity(dto);
         leitor.setPassword(passwordEncoder.encode(dto.senha()));
         leitor.setCartao(cartao);
         leitor.setRoles("Leitor");
         cartao.setLeitor(leitor); 
-        cartaoRepository.save(cartao);
+        leitorRepository.save(leitor);
         return leitorMapper.toResponseDTO(leitor);
     }
     

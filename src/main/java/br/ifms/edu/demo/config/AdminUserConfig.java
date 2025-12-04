@@ -2,7 +2,6 @@ package br.ifms.edu.demo.config;
 
 import java.time.LocalDate;
 import java.util.Random;
-import java.util.UUID;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;

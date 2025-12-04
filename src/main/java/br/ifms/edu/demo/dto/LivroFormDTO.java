@@ -10,24 +10,24 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class LivroFormDTO {
-    @Schema(description = "Título do livro", example = "Dom Casmurro", required = true)
+    @Schema(description = "Título do livro", example = "Dom Casmurro")
     @NotBlank(message = "O título do livro não pode ser vazio")
     @Size(min = 2, message = "O título do livro deve ter no mínimo 2 caracteres")
     private String titulo;
 
 
-    @Schema(description = "Ano de publicação do livro", example = "1899", required = true)
+    @Schema(description = "Ano de publicação do livro", example = "1899")
     @NotBlank(message = "O ano de publicação do livro não pode ser vazio")
     @Min(value = 1, message = "O ano de publicação deve ser um número positivo")
     private int anoPublicacao;
 
 
-    @Schema(description = "ID da editora do livro", example = "1", required = true)
+    @Schema(description = "ID da editora do livro", example = "1")
     @NotNull(message = "O ID da editora não pode ser nulo")
     private Long editoraId;
 
 
-    @Schema(description = "Lista de IDs dos autores do livro", example = "[1, 2]", required = true)
+    @Schema(description = "Lista de IDs dos autores do livro", example = "[1, 2]")
     @NotEmpty(message = "A lista de IDs dos autores não pode ser vazia")
     private List<Long> autoresIds;
     

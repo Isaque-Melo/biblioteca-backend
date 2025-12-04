@@ -4,7 +4,6 @@ package br.ifms.edu.demo.Controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.util.StringMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +48,7 @@ public class AuthController {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("nome", leitor.getNome());
         extraClaims.put("id", leitor.getId());
+        extraClaims.put("role", leitor.getRoles());
 
         if (leitor.getCartao() != null) {
             extraClaims.put("cartao", leitor.getCartao().getNumero());
