@@ -106,11 +106,15 @@ Bash
 
     Banco de Dados: localhost:5432 (Usuário/Senha: postgres)
 
+    
     sistema-biblioteca/
 ├── docker-compose.yml
+
 ├── biblioteca-backend/  <-- (Repositório clonado)
+
 │   ├── Dockerfile
 │   └── src...
 └── biblioteca-frontend/ <-- (Repositório clonado)
+
     ├── Dockerfile
     └── src...
