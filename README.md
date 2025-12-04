@@ -102,7 +102,7 @@ Bash
 
     Frontend: Acesse http://localhost:4200
 
-    API (Swagger/Backend): Acesse http://localhost:8081
+    API (Swagger/Backend): Acesse http://localhost:8081/swagger-ui/index.html
 
     Banco de Dados: localhost:5432 (Usuário/Senha: postgres)
 
